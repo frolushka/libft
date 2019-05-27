@@ -6,13 +6,15 @@
 #    By: sbednar <sbednar@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/21 23:40:02 by sbednar           #+#    #+#              #
-#    Updated: 2019/01/27 05:41:35 by sbednar          ###   ########.fr        #
+#    Updated: 2019/05/24 18:55:43 by sbednar          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+include		../Makefile.inc
+
 NAME 	=	libft.a
 
-INC_DIR	=	./inc
+INC_DIR	=	./include
 OBJ_DIR	=	./obj
 SRC_DIR	=	./src
 
@@ -87,24 +89,24 @@ SRC		= 	ft_memset.c \
 			ft_strsfree.c \
 			ft_lstdels.c \
 			ft_lstdelones.c \
+			ft_strhash.c \
 			get_next_line.c
-OBJ		=	$(SRC:.c=.o)
-
-OBJS	=	$(addprefix $(OBJ_DIR)/, $(OBJ))
+OBJ		=	$(addprefix $(OBJ_DIR)/,$(SRC:.c=.o))
 
 CC 		=	gcc
-CFLAGS	=	-Wall -Werror -Wextra
+CFLAGS	=	-Wall -Werror -Wextra -O3
 
 all: $(NAME)
 
-$(NAME): $(OBJ_DIR) $(OBJS)
-	ar rcs $(NAME) $(OBJS)
+$(NAME): $(OBJ_DIR) $(OBJ)
+	ar rcs $(NAME) $(OBJ)
 
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	$(CC) $(CFLAGS) -I$(INC_DIR) -o $@ -c $<
+	@echo "1" > ../$(TEMP)
 
 clean:
 	rm -rf $(OBJ_DIR)
@@ -114,4 +116,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all temp clean fclean re

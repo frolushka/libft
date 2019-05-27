@@ -1,42 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_strhash.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sbednar <sbednar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/11/25 16:14:24 by sbednar           #+#    #+#             */
-/*   Updated: 2019/03/16 22:09:55 by sbednar          ###   ########.fr       */
+/*   Created: 2019/05/24 18:51:06 by sbednar           #+#    #+#             */
+/*   Updated: 2019/05/24 19:47:25 by sbednar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
-int				ft_atoi(char const *str)
+int	ft_strhash(const char *str)
 {
-	int			sign;
-	int			i;
-	long long	res;
-	long long	prev;
+	int	res;
+	int	p;
+	int	i;
 
-	sign = 1;
-	i = 0;
 	res = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-		++i;
-	if (str[i] == '-')
+	p = 1;
+	i = -1;
+	while (str[++i])
 	{
-		sign = -1;
-		++i;
-	}
-	else if (str[i] == '+')
-		++i;
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		prev = res * 10 + (str[i++] - '0') * sign;
-		if ((sign > 0 && prev < res) || (sign < 0 && prev > res))
-			return (sign > 0 ? -1 : 0);
-		res = prev;
+		res = (res + (str[i] - 'a') * p) % HASH_M;
+		p = (p * HASH_P) % HASH_M;
 	}
 	return (res);
 }
